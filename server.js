@@ -11,7 +11,7 @@ mongoose.connect(
   URI,
   {
     useNewUrlParser: true,
-    useCreateIndex: true,
+    useUnifiedTopology: true,
   },
   (err) => {
     if (err) throw err;
