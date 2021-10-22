@@ -36,7 +36,6 @@ jobs:
           name: Deploy Main to Heroku
           command: |
             git push https://git.heroku.com/mcapp-api.git master
- master
 workflows:
   version: 2
   build-deploy:
