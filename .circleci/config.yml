@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/node:13
+      - image: circleci/node:12
       #ln 11 + 41 should be the same image
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -35,7 +35,7 @@ jobs:
       - run:
           name: Deploy Main to Heroku
           command: |
-            git push https://git.heroku.com/mcapp-api.git master
+            git push https://heroku:68e6766c-11c3-49da-aa3e-f0e1ba83e085@git.heroku.com/mcapp-api.git master
 workflows:
   version: 2
   build-deploy:
