@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-  res.send('Hello World!😁');
+  res.send('Heroku Deploy Test!😁');
 });
 
 const api = process.env.API;
