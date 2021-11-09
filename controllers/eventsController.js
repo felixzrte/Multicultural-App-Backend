@@ -31,9 +31,7 @@ exports.getAllEvents = async (req, res) => {
     res.status(200).json({
       status: 'success',
       results: events.length,
-      data: {
-        events,
-      },
+      events,
     });
   } catch (err) {
     res.status(400).json({
@@ -50,9 +48,7 @@ exports.createEvent = async (req, res) => {
 
     res.status(201).json({
       status: 'success',
-      data: {
-        event: newEvent,
-      },
+      event: newEvent,
     });
   } catch (err) {
     res.status(400).json({
@@ -71,9 +67,7 @@ exports.getEvent = async (req, res) => {
 
     res.status(200).json({
       status: 'success',
-      data: {
-        event,
-      },
+      event,
     });
   } catch (err) {
     res.status(400).json({
@@ -92,9 +86,7 @@ exports.updateEvent = async (req, res) => {
 
     res.status(200).json({
       status: 'success',
-      data: {
-        event,
-      },
+      event,
     });
   } catch (err) {
     res.status(400).json({
