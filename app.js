@@ -3,9 +3,9 @@ const express = require('express');
 const morgan = require('morgan');
 
 const eventRouter = require('./routes/eventsRoutes');
-//NEW STUFF
 const clubRouter = require('./routes/clubsRoutes');
-//END OF NEW STUFF
+const homePageRouter = require('./routes/homePagesRoutes');
+
 
 const app = express();
 
@@ -37,6 +37,7 @@ const api = process.env.API;
 app.use(`${api}/events`, eventRouter);
 //NEW ADDITIONS
 app.use(`${api}/clubs`, clubRouter);
+app.use(`${api}/homePages`, homePageRouter);
 
 module.exports = app;
 
