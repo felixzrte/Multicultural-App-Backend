@@ -1,26 +1,26 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-use-before-define */
-const Event = require('../models/homePageModel');
+const HomePage = require('../models/homePageModel');
 const APIFeatures = require('../utils/APIFeatures');
 
 // Get All home page
 exports.getAllHomePages = async (req, res) => {
   try {
     // EXECUTE QUERY
-    const features = new APIFeatures(Event.find(), req.query)
+    const features = new APIFeatures(HomePage.find(), req.query)
       .filter()
       .sort()
       .limitFields()
       .paginate();
 
-    const events = await features.query;
+    const homePage = await features.query;
 
     // SEND RESPONSE
     res.status(200).json({
       status: 'success',
-      results: events.length,
+      results: homePage.length,
       data: {
-        events,
+        homePage,
       },
     });
   } catch (err) {
@@ -34,12 +34,12 @@ exports.getAllHomePages = async (req, res) => {
 // Create home page
 exports.createHomePage = async (req, res) => {
   try {
-    const newEvent = await Event.create(req.body);
+    const newHomePage = await HomePage.create(req.body);
 
     res.status(201).json({
       status: 'success',
       data: {
-        event: newEvent,
+        homePage: newHomePage,
       },
     });
   } catch (err) {
@@ -54,13 +54,13 @@ exports.createHomePage = async (req, res) => {
 exports.getHomePage = async (req, res) => {
   // eslint-disable-next-line no-console
   try {
-    const event = await Event.findById(req.params.id);
+    const homePage = await HomePage.findById(req.params.id);
     // Tour.findOne({ _id: req.params.id })
 
     res.status(200).json({
       status: 'success',
       data: {
-        event,
+        homePage,
       },
     });
   } catch (err) {
@@ -71,22 +71,18 @@ exports.getHomePage = async (req, res) => {
   }
 };
 
-// Update home page
+// Update Home Page
 exports.updateHomePage = async (req, res) => {
   try {
-    const event = await Event.findByIdAndUpdate(req.params.id, req.body, {
-      new: event,
-    });
+    const homePage = await HomePage.findByIdAndUpdate(req.params.id, req.body);
 
     res.status(200).json({
       status: 'success',
-      data: {
-        event,
-      },
+      homePage,
     });
   } catch (err) {
     res.status(400).json({
-      status: 'fail',
+      status: 'NEW SAMPLE TEXT',
       message: err,
     });
   }
@@ -95,7 +91,7 @@ exports.updateHomePage = async (req, res) => {
 // Delete home page
 exports.deleteHomePage = async (req, res) => {
   try {
-    await Event.findByIdAndDelete(req.params.id);
+    await HomePage.findByIdAndDelete(req.params.id);
     res.status(204).json({
       status: 'error',
       data: null,

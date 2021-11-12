@@ -76,19 +76,15 @@ exports.getClub = async (req, res) => {
 // Update Club
 exports.updateClub = async (req, res) => {
   try {
-    const club = await Club.findByIdAndUpdate(req.params.id, req.body, {
-      new: club,
-    });
+    const club = await Club.findByIdAndUpdate(req.params.id, req.body);
 
     res.status(200).json({
       status: 'success',
-      data: {
-        club,
-      },
+      club,
     });
   } catch (err) {
     res.status(400).json({
-      status: 'fail',
+      status: 'NEW SAMPLE TEXT',
       message: err,
     });
   }
