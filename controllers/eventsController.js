@@ -94,7 +94,6 @@ exports.getEvent = async (req, res) => {
   }
 };
 
-
 // Delete Event
 exports.deleteEvent = async (req, res) => {
   try {

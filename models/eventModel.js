@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 const eventSchema = new mongoose.Schema({
   clubName: {
@@ -11,6 +12,7 @@ const eventSchema = new mongoose.Schema({
     required: [true, 'An event must have a name'],
     max: 64,
   },
+  slug: String,
   date: {
     type: Date,
     required: [true, 'An event must have a date'],
@@ -43,6 +45,34 @@ const eventSchema = new mongoose.Schema({
     required: false,
     max: 300,
   },
+  secretEvent: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+// DOCUMENT Middleware: runs before .save() and .create()
+eventSchema.pre('save', function (next) {
+  this.slug = slugify(this.eventName, { lower: true });
+  next();
+});
+
+/* eventSchema.post('save', (doc, next) => {
+  console.log(doc);
+  next();
+}); */
+
+// QUERY MIDDLEWARE
+eventSchema.pre(/^find/, function (next) {
+  this.find({ secretEvent: { $ne: true } });
+
+  this.start = Date.now();
+  next();
+});
+
+eventSchema.post(/^find/, function (docs, next) {
+  console.log(`Query took ${Date.now() - this.start} miliseconds`);
+  next();
 });
 
 const Event = mongoose.model('Event', eventSchema);
