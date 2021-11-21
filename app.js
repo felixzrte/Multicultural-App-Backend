@@ -5,7 +5,7 @@ const morgan = require('morgan');
 const eventRouter = require('./routes/eventsRoutes');
 const clubRouter = require('./routes/clubsRoutes');
 const homePageRouter = require('./routes/homePagesRoutes');
-
+// const userRouter = require('./routes/userRoutes');
 
 const app = express();
 
@@ -16,11 +16,6 @@ if (process.env.NODE_ENV === 'development') {
 }
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`)); // serve static files from folder, not route
-
-app.use((req, res, next) => {
-  console.log('Hello from the middleware 😁 ');
-  next();
-});
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString(); // When Request Happens
@@ -35,9 +30,9 @@ const api = process.env.API;
 
 // Routes
 app.use(`${api}/events`, eventRouter);
-//NEW ADDITIONS
 app.use(`${api}/clubs`, clubRouter);
 app.use(`${api}/homePages`, homePageRouter);
+// app.use(`${api}/users`, userRouter);
 
 module.exports = app;
 

@@ -61,7 +61,10 @@ exports.createEvent = async (req, res) => {
 // Update Event
 exports.updateEvent = async (req, res) => {
   try {
-    const event = await Event.findByIdAndUpdate(req.params.id, req.body);
+    const event = await Event.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
     res.status(200).json({
       status: 'success',
@@ -69,7 +72,7 @@ exports.updateEvent = async (req, res) => {
     });
   } catch (err) {
     res.status(400).json({
-      status: 'NEW SAMPLE TEXT',
+      status: 'fail',
       message: err,
     });
   }
@@ -93,7 +96,6 @@ exports.getEvent = async (req, res) => {
     });
   }
 };
-
 
 // Delete Event
 exports.deleteEvent = async (req, res) => {
