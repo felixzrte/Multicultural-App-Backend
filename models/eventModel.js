@@ -5,12 +5,24 @@ const eventSchema = new mongoose.Schema({
   clubName: {
     type: String,
     required: [true, 'The hosting club must have a name'],
-    max: 64,
+    enum: {
+      values: [
+        'La Alianza Latina',
+        'Asian Student Association',
+        'Carribbean Student Association',
+        'Black Student Union',
+        'African Student Union',
+        'ISA MuKappa',
+        'Multicultural Council',
+      ],
+      message:
+        'Club must be either: La Alianza Latina, Asian Student Association, Carribbean Student Association, Black Student Union, African Student Union, ISA MuKappa, Multicultural Council',
+    },
   },
   eventName: {
     type: String,
     required: [true, 'An event must have a name'],
-    max: 64,
+    maxlength: [40, 'A Event must have less or equal than 40 characters'],
   },
   slug: String,
   date: {
