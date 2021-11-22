@@ -2,6 +2,8 @@
 /* eslint-disable no-use-before-define */
 const Event = require('../models/eventModel');
 const APIFeatures = require('../utils/APIFeatures');
+const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/appError');
 
 exports.aliasLalEvents = (req, res, next) => {
   // alias middlewares
@@ -16,99 +18,76 @@ exports.aliasCsaEvents = (req, res, next) => {
 };
 
 // Get All Events
-exports.getAllEvents = async (req, res) => {
-  try {
-    // EXECUTE QUERY
-    const features = new APIFeatures(Event.find(), req.query)
-      .filter()
-      .sort()
-      .limitFields()
-      .paginate();
+exports.getAllEvents = catchAsync(async (req, res, next) => {
+  // EXECUTE QUERY
+  const features = new APIFeatures(Event.find(), req.query)
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate();
 
-    const events = await features.query;
+  const events = await features.query;
 
-    // SEND RESPONSE
-    res.status(200).json({
-      status: 'success',
-      results: events.length,
-      events,
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: 'fail',
-      message: err,
-    });
-  }
-};
+  // SEND RESPONSE
+  res.status(200).json({
+    status: 'success',
+    results: events.length,
+    events,
+  });
+});
 
 // Create Event
-exports.createEvent = async (req, res) => {
-  try {
-    const newEvent = await Event.create(req.body);
+exports.createEvent = catchAsync(async (req, res, next) => {
+  const newEvent = await Event.create(req.body);
 
-    res.status(201).json({
-      status: 'success',
-      event: newEvent,
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: 'fail',
-      message: err,
-    });
-  }
-};
+  res.status(201).json({
+    status: 'success',
+    event: newEvent,
+  });
+});
 
 // Update Event
-exports.updateEvent = async (req, res) => {
-  try {
-    const event = await Event.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+exports.updateEvent = catchAsync(async (req, res, next) => {
+  const event = await Event.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
 
-    res.status(200).json({
-      status: 'success',
-      event,
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: 'fail',
-      message: err,
-    });
+  if (!event) {
+    return next(new AppError('No event found with that ID', 404));
   }
-};
+
+  res.status(200).json({
+    status: 'success',
+    event,
+  });
+});
 
 // Get Event
-exports.getEvent = async (req, res) => {
-  // eslint-disable-next-line no-console
-  try {
-    const event = await Event.findById(req.params.id);
-    // Tour.findOne({ _id: req.params.id })
+exports.getEvent = catchAsync(async (req, res, next) => {
+  const event = await Event.findById(req.params.id);
+  // Tour.findOne({ _id: req.params.id })
 
-    res.status(200).json({
-      status: 'success',
-      event,
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: 'fail',
-      message: err,
-    });
+  if (!event) {
+    return next(new AppError('No event found with that ID', 404));
   }
-};
+
+  res.status(200).json({
+    status: 'success',
+    event,
+  });
+});
 
 // Delete Event
-exports.deleteEvent = async (req, res) => {
-  try {
-    await Event.findByIdAndDelete(req.params.id);
-    res.status(204).json({
-      status: 'error',
-      data: null,
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: err,
-    });
+exports.deleteEvent = catchAsync(async (req, res, next) => {
+  const event = await Event.findByIdAndDelete(req.params.id);
+
+  if (!event) {
+    return next(new AppError('No event found with that ID', 404));
   }
-};
+
+  res.status(204).json({
+    status: 'error',
+    data: null,
+  });
+});

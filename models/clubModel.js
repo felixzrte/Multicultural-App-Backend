@@ -23,7 +23,7 @@ const clubSchema = new mongoose.Schema({
     max: 64,
   },
   logoImage: {
-    type: String,  //name of image
+    type: String, //name of image
     required: [true, 'A club must have a logo image'],
   },
   bannerImage: {
@@ -43,8 +43,8 @@ const clubSchema = new mongoose.Schema({
     required: false,
   },
   studentImage: {
-      type: String,
-      required: false,
+    type: String,
+    required: false,
   },
   color1: {
     type: String,
@@ -55,8 +55,8 @@ const clubSchema = new mongoose.Schema({
     required: false,
   },
   color3: {
-      type: String,
-      required: false,
+    type: String,
+    required: false,
   },
 });
 
