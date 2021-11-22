@@ -7,7 +7,7 @@ const AppError = require('./utils/appError');
 const eventRouter = require('./routes/eventsRoutes');
 const clubRouter = require('./routes/clubsRoutes');
 const homePageRouter = require('./routes/homePagesRoutes');
-// const userRouter = require('./routes/userRoutes');
+const userRouter = require('./routes/userRoutes');
 
 const app = express();
 
@@ -29,7 +29,7 @@ const api = process.env.API;
 app.use(`${api}/events`, eventRouter);
 app.use(`${api}/clubs`, clubRouter);
 app.use(`${api}/homePages`, homePageRouter);
-// app.use(`${api}/users`, userRouter);
+app.use(`${api}/users`, userRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
