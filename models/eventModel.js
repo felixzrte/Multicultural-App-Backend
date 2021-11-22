@@ -22,6 +22,8 @@ const eventSchema = new mongoose.Schema({
   eventName: {
     type: String,
     required: [true, 'An event must have a name'],
+    unique: true,
+    trim: true,
     maxlength: [40, 'A Event must have less or equal than 40 characters'],
   },
   slug: String,
