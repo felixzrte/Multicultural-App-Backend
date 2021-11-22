@@ -3,6 +3,7 @@
 const Event = require('../models/eventModel');
 const APIFeatures = require('../utils/APIFeatures');
 const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/appError');
 
 exports.aliasLalEvents = (req, res, next) => {
   // alias middlewares
@@ -52,6 +53,10 @@ exports.updateEvent = catchAsync(async (req, res, next) => {
     runValidators: true,
   });
 
+  if (!event) {
+    return next(new AppError('No event found with that ID', 404));
+  }
+
   res.status(200).json({
     status: 'success',
     event,
@@ -63,6 +68,10 @@ exports.getEvent = catchAsync(async (req, res, next) => {
   const event = await Event.findById(req.params.id);
   // Tour.findOne({ _id: req.params.id })
 
+  if (!event) {
+    return next(new AppError('No event found with that ID', 404));
+  }
+
   res.status(200).json({
     status: 'success',
     event,
@@ -71,7 +80,12 @@ exports.getEvent = catchAsync(async (req, res, next) => {
 
 // Delete Event
 exports.deleteEvent = catchAsync(async (req, res, next) => {
-  await Event.findByIdAndDelete(req.params.id);
+  const event = await Event.findByIdAndDelete(req.params.id);
+
+  if (!event) {
+    return next(new AppError('No event found with that ID', 404));
+  }
+
   res.status(204).json({
     status: 'error',
     data: null,
