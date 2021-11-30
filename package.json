@@ -6,12 +6,9 @@
   "scripts": {
     "start": "node server.js",
     "start:dev": "nodemon server.js",
-<<<<<<< HEAD
     "start:prod": "NODE_ENV=production nodemon server.js",
     "debug": "ndb server.js"
-=======
-    "start:prod": "NODE_ENV=production nodemon server.js"
->>>>>>> parent of 9d1683c (The Big Picture Update)
+
   },
   "author": "Felix Zarate, Roman Searle",
   "license": "ISC",
@@ -20,13 +17,9 @@
     "express": "^4.17.1",
     "mongoose": "^5.13.12",
     "morgan": "^1.10.0",
-<<<<<<< HEAD
     "ndb": "^1.1.5",
     "node": "^16.11.1",
     "slugify": "^1.6.2"
-=======
-    "node": "^16.11.1"
->>>>>>> parent of 9d1683c (The Big Picture Update)
   },
   "devDependencies": {
     "eslint": "^8.0.1",
