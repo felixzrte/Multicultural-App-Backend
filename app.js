@@ -14,10 +14,12 @@ const methodOverride = require('method-override');
 
 const morgan = require('morgan');
 
+const globalErrorHandler = require('./controllers/errorController');
+const AppError = require('./utils/appError');
 const eventRouter = require('./routes/eventsRoutes');
 const clubRouter = require('./routes/clubsRoutes');
 const homePageRouter = require('./routes/homePagesRoutes');
-
+// const userRouter = require('./routes/userRoutes');
 
 
 const { config } = require('process');
@@ -65,11 +67,6 @@ if (process.env.NODE_ENV === 'development') {
 }
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`)); // serve static files from folder, not route
-
-app.use((req, res, next) => {
-  console.log('Hello from the middleware 😁 ');
-  next();
-});
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString(); // When Request Happens
@@ -165,9 +162,17 @@ app.delete('/files/:id', (req, res) => {
 
 const api = process.env.API;
 // Routes
+const api = process.env.API;
 app.use(`${api}/events`, eventRouter);
 app.use(`${api}/clubs`, clubRouter);
 app.use(`${api}/homePages`, homePageRouter);
+// app.use(`${api}/users`, userRouter);
+
+app.all('*', (req, res, next) => {
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+});
+
+app.use(globalErrorHandler);
 
 module.exports = app;
 
