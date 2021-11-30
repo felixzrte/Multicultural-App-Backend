@@ -28,8 +28,6 @@ app.get('/', (req, res) => {
   res.send('Hello World!😁');
 });
 
-const api = process.env.API;
-
 // Routes
 const api = process.env.API;
 app.use(`${api}/events`, eventRouter);
