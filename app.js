@@ -7,13 +7,14 @@ const path = require('path');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 const multer = require('multer');
-const {GridFsStorage} = require('multer-gridfs-storage');
+const { GridFsStorage } = require('multer-gridfs-storage');
 const Grid = require('gridfs-stream');
 const methodOverride = require('method-override');
 //END NEW STUFF
 
 const morgan = require('morgan');
 
+const { config } = require('process');
 const globalErrorHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
 const eventRouter = require('./routes/eventsRoutes');
@@ -21,7 +22,6 @@ const clubRouter = require('./routes/clubsRoutes');
 const homePageRouter = require('./routes/homePagesRoutes');
 // const userRouter = require('./routes/userRoutes');
 
-const { config } = require('process');
 const app = express();
 
 //MORE NEW STUFF
@@ -29,7 +29,8 @@ app.use(bodyParser.json());
 app.use(methodOverride('_method'));
 app.set('view engine', 'ejs');
 //CHANGE THIS DUMB ASS
-const mongoURI = 'mongodb+srv://felix:10026712@cluster0.g8a5g.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const mongoURI =
+  'mongodb+srv://felix:10026712@cluster0.g8a5g.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const conn = mongoose.createConnection(mongoURI);
 let gfs;
 conn.once('open', () => {
@@ -40,8 +41,8 @@ conn.once('open', () => {
 // Create storage engine
 const storage = new GridFsStorage({
   url: mongoURI,
-  file: (req, file) => {
-    return new Promise((resolve, reject) => {
+  file: (req, file) =>
+    new Promise((resolve, reject) => {
       crypto.randomBytes(16, (err, buf) => {
         if (err) {
           return reject(err);
@@ -49,12 +50,11 @@ const storage = new GridFsStorage({
         const filename = buf.toString('hex') + path.extname(file.originalname);
         const fileInfo = {
           filename: filename,
-          bucketName: 'uploads'
+          bucketName: 'uploads',
         };
         resolve(fileInfo);
       });
-    });
-  }
+    }),
 });
 const upload = multer({ storage });
 //END NEW STUFF
@@ -81,7 +81,7 @@ app.get('/', (req, res) => {
     if (!files || files.length === 0) {
       res.render('index', { files: false });
     } else {
-      files.map(file => {
+      files.map((file) => {
         if (
           file.contentType === 'image/jpeg' ||
           file.contentType === 'image/png'
@@ -108,7 +108,7 @@ app.get('/files', (req, res) => {
     // Check if files
     if (!files || files.length === 0) {
       return res.status(404).json({
-        err: 'No files exist'
+        err: 'No files exist',
       });
     }
 
@@ -123,7 +123,7 @@ app.get('/files/:filename', (req, res) => {
     // Check if file
     if (!file || file.length === 0) {
       return res.status(404).json({
-        err: 'No file exists'
+        err: 'No file exists',
       });
     }
     // File exists
@@ -137,7 +137,7 @@ app.get('/image/:filename', (req, res) => {
     // Check if file
     if (!file || file.length === 0) {
       return res.status(404).json({
-        err: 'No file exists'
+        err: 'No file exists',
       });
     }
     // Check if image
@@ -147,7 +147,7 @@ app.get('/image/:filename', (req, res) => {
       readstream.pipe(res);
     } else {
       res.status(404).json({
-        err: 'Not an image'
+        err: 'Not an image',
       });
     }
   });
