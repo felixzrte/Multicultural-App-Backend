@@ -28,7 +28,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(methodOverride('_method'));
 app.set('view engine', 'ejs');
-//CHANGE THIS DUMB ASS
+//CHANGE THIS 
 const mongoURI =
   'mongodb+srv://felix:10026712@cluster0.g8a5g.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const conn = mongoose.createConnection(mongoURI);
@@ -72,7 +72,7 @@ app.use((req, res, next) => {
   next();
 });
 
-//NEW SHIT
+//NEW STUFF
 // @route GET /
 // @desc Loads form
 app.get('/', (req, res) => {
