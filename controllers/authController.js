@@ -80,7 +80,19 @@ exports.protect = catchAsync(async (req, res, next) => {
     );
   }
 
-  // Grant access to protected route 
+  // Grant access to protected route
   req.user = currentUser;
   next();
 });
+
+exports.restrictTo =
+  (...roles) =>
+  (req, res, next) => {
+    // roles is an array ['admin', ...]. role = 'user'
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new AppError('You do not have permission to perform this action!', 403)
+      );
+    }
+    next();
+  };
