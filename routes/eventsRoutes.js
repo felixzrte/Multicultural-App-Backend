@@ -1,5 +1,6 @@
 const express = require('express');
 const eventsController = require('../controllers/eventsController');
+const authController = require('../controllers/authController');
 
 const router = express.Router();
 
@@ -13,7 +14,7 @@ router
 
 router
   .route('/')
-  .get(eventsController.getAllEvents)
+  .get(authController.protect, eventsController.getAllEvents)
   .post(eventsController.createEvent);
 
 router

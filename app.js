@@ -24,11 +24,25 @@ const userRouter = require('./routes/userRoutes');
 
 const app = express();
 
+// Middleware
+if (process.env.NODE_ENV === 'development') {
+  // If ran in dev environment => will use morgan
+  app.use(morgan('dev')); // morgan logs the requests from API
+}
+app.use(express.json());
+app.use(express.static(`${__dirname}/public`)); // serve static files from folder, not route
+
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString(); // When Request Happens
+  // console.log(req.headers);
+  next();
+});
+
 //MORE NEW STUFF
 app.use(bodyParser.json());
 app.use(methodOverride('_method'));
 app.set('view engine', 'ejs');
-//CHANGE THIS 
+//CHANGE THIS
 const mongoURI =
   'mongodb+srv://felix:10026712@cluster0.g8a5g.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const conn = mongoose.createConnection(mongoURI);
@@ -58,20 +72,6 @@ const storage = new GridFsStorage({
 });
 const upload = multer({ storage });
 //END NEW STUFF
-
-// Middleware
-if (process.env.NODE_ENV === 'development') {
-  // If ran in dev environment => will use morgan
-  app.use(morgan('dev')); // morgan logs the requests from API
-}
-app.use(express.json());
-app.use(express.static(`${__dirname}/public`)); // serve static files from folder, not route
-
-app.use((req, res, next) => {
-  req.requestTime = new Date().toISOString(); // When Request Happens
-  next();
-});
-
 //NEW STUFF
 // @route GET /
 // @desc Loads form
