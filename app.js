@@ -1,5 +1,7 @@
 /* eslint-disable no-console */
 const express = require('express');
+const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
 
 //NEW STUFF FOR REAL
 const bodyParser = require('body-parser');
@@ -12,8 +14,6 @@ const Grid = require('gridfs-stream');
 const methodOverride = require('method-override');
 //END NEW STUFF
 
-const morgan = require('morgan');
-
 const { config } = require('process');
 const globalErrorHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
@@ -24,11 +24,19 @@ const userRouter = require('./routes/userRoutes');
 
 const app = express();
 
-// Middleware
+// Global Middleware
 if (process.env.NODE_ENV === 'development') {
   // If ran in dev environment => will use morgan
   app.use(morgan('dev')); // morgan logs the requests from API
 }
+
+const limiter = rateLimit({
+  max: 100,
+  windowMS: 60 * 60 * 1000,
+  message: 'Too many request from this IP, please try again in an hour!',
+});
+app.use('/api', limiter);
+
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`)); // serve static files from folder, not route
 
