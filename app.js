@@ -5,6 +5,7 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
+const hpp = require('hpp');
 
 //NEW STUFF FOR REAL
 const bodyParser = require('body-parser');
@@ -53,6 +54,13 @@ app.use(mongoSanitize());
 
 // Data sanitization against XSS
 app.use(xss());
+
+// Prevent parameter pollution
+app.use(
+  hpp({
+    whitelist: ['location', 'clubName'],
+  })
+);
 
 // Serving static files
 app.use(express.static(`${__dirname}/public`)); // serve static files from folder, not route
