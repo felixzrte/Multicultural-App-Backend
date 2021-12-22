@@ -21,6 +21,10 @@ router
   .route('/:id')
   .get(eventsController.getEvent)
   .patch(eventsController.updateEvent)
-  .delete(eventsController.deleteEvent);
+  .delete(
+    authController.protect,
+    authController.restrictTo('admin'),
+    eventsController.deleteEvent
+  );
 
 module.exports = router;
