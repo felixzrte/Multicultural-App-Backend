@@ -2,12 +2,12 @@ const mongoose = require('mongoose');
 
 //CHANGE ALL THIS
 const clubSchema = new mongoose.Schema({
-  clubName: {
+  name: {
     type: String,
     required: [true, 'The club must have a name'],
     max: 64,
   },
-  clubAcronym: {
+  acronym: {
     type: String,
     required: [true, 'A club must have an acronym'],
     max: 64,
@@ -17,6 +17,7 @@ const clubSchema = new mongoose.Schema({
     required: [true, 'A club must have a mission statement'],
     max: 300,
   },
+  cabinetMembers: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   bio: {
     type: String,
     required: [true, 'A club must have a bio'],
@@ -58,6 +59,14 @@ const clubSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+});
+
+clubSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'cabinetMembers',
+    select: '-__v -passwordChangedAt',
+  });
+  next();
 });
 
 const Club = mongoose.model('Club', clubSchema);
