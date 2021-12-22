@@ -34,11 +34,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     requried: [true, 'Please confirm your password'],
     validate: {
-      // Only works on CREATE + SAVE
+      // This only works on CREATE and SAVE!!!
       validator: function (el) {
         return el === this.password;
       },
-      message: 'Passwords are not the same',
+      message: 'Passwords are not the same!',
     },
   },
   passwordChangedAt: Date,
@@ -47,14 +47,21 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre('save', async function (next) {
-  // Only run fn if password is modified
+  // Only run this function if password was actually modified
   if (!this.isModified('password')) return next();
 
-  // Hash password with cost of 12
+  // Hash the password with cost of 12
   this.password = await bcrypt.hash(this.password, 12);
 
-  // Delete password confirm field
+  // Delete passwordConfirm field
   this.passwordConfirm = undefined;
+  next();
+});
+
+userSchema.pre('save', function(next) {
+  if (!this.isModified('password') || this.isNew) return next();
+
+  this.passwordChangedAt = Date.now() - 1000;
   next();
 });
 
