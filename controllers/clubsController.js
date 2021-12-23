@@ -21,9 +21,8 @@ exports.getAllClubs = async (req, res) => {
     res.status(200).json({
       status: 'success',
       results: clubs.length,
-      data: {
-        clubs,
-      },
+      clubs,
+  
     });
   } catch (err) {
     res.status(400).json({
@@ -40,9 +39,7 @@ exports.createClub = async (req, res) => {
 
     res.status(201).json({
       status: 'success',
-      data: {
-        club: newClub,
-      },
+      clubs,
     });
   } catch (err) {
     res.status(400).json({
@@ -61,9 +58,7 @@ exports.getClub = async (req, res) => {
 
     res.status(200).json({
       status: 'success',
-      data: {
-        club,
-      },
+      clubs,
     });
   } catch (err) {
     res.status(400).json({
