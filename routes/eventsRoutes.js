@@ -14,7 +14,8 @@ router
 
 router
   .route('/')
-  .get(authController.protect, eventsController.getAllEvents)
+  // authController.protect,
+  .get(eventsController.getAllEvents)
   .post(eventsController.createEvent);
 
 router
