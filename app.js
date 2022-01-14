@@ -20,7 +20,9 @@ const AppError = require('./utils/appError');
 const eventRouter = require('./routes/eventsRoutes');
 const clubRouter = require('./routes/clubsRoutes');
 const homePageRouter = require('./routes/homePagesRoutes');
-const userRouter = require('./routes/userRoutes');
+//const userRouter = require('./routes/userRoutes');
+const suggestionRouter = require('./routes/suggestionsRoutes');
+const merchRouter = require('./routes/merchsRoutes')
 
 const app = express();
 
@@ -171,6 +173,8 @@ app.use(`${api}/events`, eventRouter);
 app.use(`${api}/clubs`, clubRouter);
 app.use(`${api}/homePages`, homePageRouter);
 // app.use(`${api}/users`, userRouter);
+app.use(`${api}/suggestions`, suggestionRouter);
+app.use(`${api}/merchs`, merchRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
