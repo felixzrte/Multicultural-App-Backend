@@ -185,4 +185,4 @@ app.use(globalErrorHandler);
 module.exports = app;
 
 // Flow:
-//  Recieve request in app.js -> depending on the route, enter one of the routes -> from routes, execute one of the controllers
+// Recieve request in app.js -> depending on the route, enter one of the routes -> from routes, execute one of the controllers
