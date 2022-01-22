@@ -24,6 +24,8 @@ const AppError = require('./utils/appError');
 const eventRouter = require('./routes/eventsRoutes');
 const clubRouter = require('./routes/clubsRoutes');
 const homePageRouter = require('./routes/homePagesRoutes');
+const suggestionRouter = require('./routes/suggestionsRoutes');
+const merchRouter = require('./routes/merchsRoutes')
 const userRouter = require('./routes/userRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
 
@@ -205,6 +207,8 @@ const api = process.env.API;
 app.use(`${api}/events`, eventRouter);
 app.use(`${api}/clubs`, clubRouter);
 app.use(`${api}/homePages`, homePageRouter);
+app.use(`${api}/suggestions`, suggestionRouter);
+app.use(`${api}/merchs`, merchRouter);
 app.use(`${api}/users`, userRouter);
 app.use(`${api}/bookings`, bookingRouter);
 
@@ -217,4 +221,4 @@ app.use(globalErrorHandler);
 module.exports = app;
 
 // Flow:
-//  Recieve request in app.js -> depending on the route, enter one of the routes -> from routes, execute one of the controllers
+// Recieve request in app.js -> depending on the route, enter one of the routes -> from routes, execute one of the controllers
