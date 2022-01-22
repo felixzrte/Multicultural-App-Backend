@@ -65,7 +65,7 @@ exports.updateEvent = catchAsync(async (req, res, next) => {
 
 // Get Event
 exports.getEvent = catchAsync(async (req, res, next) => {
-  const event = await Event.findById(req.params.id);
+  const event = await Event.findById(req.params.id).populate('bookings');
   // Tour.findOne({ _id: req.params.id })
 
   if (!event) {

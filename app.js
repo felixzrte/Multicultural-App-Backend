@@ -1,5 +1,11 @@
 /* eslint-disable no-console */
 const express = require('express');
+const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
+const hpp = require('hpp');
 
 //NEW STUFF FOR REAL
 const bodyParser = require('body-parser');
@@ -12,25 +18,68 @@ const Grid = require('gridfs-stream');
 const methodOverride = require('method-override');
 //END NEW STUFF
 
-const morgan = require('morgan');
-
 const { config } = require('process');
 const globalErrorHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
 const eventRouter = require('./routes/eventsRoutes');
 const clubRouter = require('./routes/clubsRoutes');
 const homePageRouter = require('./routes/homePagesRoutes');
-//const userRouter = require('./routes/userRoutes');
 const suggestionRouter = require('./routes/suggestionsRoutes');
 const merchRouter = require('./routes/merchsRoutes')
+const userRouter = require('./routes/userRoutes');
+const bookingRouter = require('./routes/bookingRoutes');
 
 const app = express();
+
+// Global Middleware
+// Set security HTTP headers
+app.use(helmet());
+
+// Dev logging
+if (process.env.NODE_ENV === 'development') {
+  // If ran in dev environment => will use morgan
+  app.use(morgan('dev')); // morgan logs the requests from API
+}
+
+// Limit requests from same IP
+const limiter = rateLimit({
+  max: 100,
+  windowMS: 60 * 60 * 1000,
+  message: 'Too many request from this IP, please try again in an hour!',
+});
+app.use('/api', limiter);
+
+// Body parser, reading data from the body into req.body
+app.use(express.json({ limit: '10kb' }));
+
+// Data sanitization against NoSQL query injection
+app.use(mongoSanitize());
+
+// Data sanitization against XSS
+app.use(xss());
+
+// Prevent parameter pollution
+app.use(
+  hpp({
+    whitelist: ['location', 'clubName'],
+  })
+);
+
+// Serving static files
+app.use(express.static(`${__dirname}/public`)); // serve static files from folder, not route
+
+// Testing middleware
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString(); // When Request Happens
+  // console.log(req.headers);
+  next();
+});
 
 //MORE NEW STUFF
 app.use(bodyParser.json());
 app.use(methodOverride('_method'));
 app.set('view engine', 'ejs');
-//CHANGE THIS 
+//CHANGE THIS
 const mongoURI =
   'mongodb+srv://felix:10026712@cluster0.g8a5g.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const conn = mongoose.createConnection(mongoURI);
@@ -60,20 +109,6 @@ const storage = new GridFsStorage({
 });
 const upload = multer({ storage });
 //END NEW STUFF
-
-// Middleware
-if (process.env.NODE_ENV === 'development') {
-  // If ran in dev environment => will use morgan
-  app.use(morgan('dev')); // morgan logs the requests from API
-}
-app.use(express.json());
-app.use(express.static(`${__dirname}/public`)); // serve static files from folder, not route
-
-app.use((req, res, next) => {
-  req.requestTime = new Date().toISOString(); // When Request Happens
-  next();
-});
-
 //NEW STUFF
 // @route GET /
 // @desc Loads form
@@ -172,9 +207,10 @@ const api = process.env.API;
 app.use(`${api}/events`, eventRouter);
 app.use(`${api}/clubs`, clubRouter);
 app.use(`${api}/homePages`, homePageRouter);
-// app.use(`${api}/users`, userRouter);
 app.use(`${api}/suggestions`, suggestionRouter);
 app.use(`${api}/merchs`, merchRouter);
+app.use(`${api}/users`, userRouter);
+app.use(`${api}/bookings`, bookingRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
