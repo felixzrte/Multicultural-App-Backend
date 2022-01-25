@@ -35,6 +35,7 @@ const app = express();
 // Set security HTTP headers
 app.use(helmet());
 
+
 // Dev logging
 if (process.env.NODE_ENV === 'development') {
   // If ran in dev environment => will use morgan
@@ -50,7 +51,7 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 
 // Body parser, reading data from the body into req.body
-app.use(express.json({ limit: '10kb' }));
+app.use(express.json({ limit: '50mb' }));
 
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
