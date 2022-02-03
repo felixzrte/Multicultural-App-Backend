@@ -21,9 +21,7 @@ exports.getAllMerchs = async (req, res) => {
     res.status(200).json({
       status: 'success',
       results: merchs.length,
-      data: {
-        merchs,
-      },
+      merchs,
     });
   } catch (err) {
     res.status(400).json({
@@ -40,9 +38,7 @@ exports.createMerch = async (req, res) => {
 
     res.status(201).json({
       status: 'success',
-      data: {
-        club: newMerch,
-      },
+      merch: newMerch,
     });
   } catch (err) {
     res.status(400).json({
@@ -61,9 +57,7 @@ exports.getMerch = async (req, res) => {
 
     res.status(200).json({
       status: 'success',
-      data: {
-        merch,
-      },
+      merch,
     });
   } catch (err) {
     res.status(400).json({
@@ -80,7 +74,7 @@ exports.updateMerch = async (req, res) => {
 
     res.status(200).json({
       status: 'success',
-      club,
+      merch,
     });
   } catch (err) {
     res.status(400).json({
@@ -96,7 +90,7 @@ exports.deleteMerch = async (req, res) => {
     await Merch.findByIdAndDelete(req.params.id);
     res.status(204).json({
       status: 'error',
-      data: null,
+      merch,
     });
   } catch (err) {
     res.status(404).json({
