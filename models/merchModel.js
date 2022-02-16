@@ -14,31 +14,31 @@ const merchSchema = new mongoose.Schema({
   },
   pic: {
     type: String,
-    required: True,
+    required: [true, 'An item must have a picture'],
   },
   contactEmail: {
     type: String, 
-    required: True,
+    required: [true, 'An item must have a contact email'],
   },
   contactNumber: {
     type: String, 
-    required: True,
+    required: false,
   },
   description: {
     type: String, 
-    required: True,
+    required: [true, 'An item must have a description'],
   },
   numSmall: {
-    type: String, 
-    required: False,
+    type: Number, 
+    required: false,
   },
   numMedium: {
-    type: String, 
-    required: False,
+    type: Number, 
+    required: false,
   },
   numLarge: {
-    type: String, 
-    required: False,
+    type: Number, 
+    required: false,
   },
 });
 
