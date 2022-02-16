@@ -23,7 +23,11 @@ const merchSchema = new mongoose.Schema({
   contactNumber: {
     type: String, //name of image
     required: false,
-  }
+  },
+  description: {
+    type: String, //name of image
+    required: false,
+  },
 });
 
 const Merch = mongoose.model('Merch', merchSchema);
