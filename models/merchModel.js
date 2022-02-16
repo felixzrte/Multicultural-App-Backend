@@ -14,19 +14,31 @@ const merchSchema = new mongoose.Schema({
   },
   pic: {
     type: String,
-    required: false,
+    required: True,
   },
   contactEmail: {
-    type: String, //name of image
-    required: false,
+    type: String, 
+    required: True,
   },
   contactNumber: {
-    type: String, //name of image
-    required: false,
+    type: String, 
+    required: True,
   },
   description: {
-    type: String, //name of image
-    required: false,
+    type: String, 
+    required: True,
+  },
+  numSmall: {
+    type: String, 
+    required: False,
+  },
+  numMedium: {
+    type: String, 
+    required: False,
+  },
+  numLarge: {
+    type: String, 
+    required: False,
   },
 });
 
