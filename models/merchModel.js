@@ -14,16 +14,32 @@ const merchSchema = new mongoose.Schema({
   },
   pic: {
     type: String,
-    required: false,
+    required: [true, 'An item must have a picture'],
   },
   contactEmail: {
-    type: String, //name of image
-    required: false,
+    type: String, 
+    required: [true, 'An item must have a contact email'],
   },
   contactNumber: {
-    type: String, //name of image
+    type: String, 
     required: false,
-  }
+  },
+  description: {
+    type: String, 
+    required: [true, 'An item must have a description'],
+  },
+  numSmall: {
+    type: Number, 
+    required: false,
+  },
+  numMedium: {
+    type: Number, 
+    required: false,
+  },
+  numLarge: {
+    type: Number, 
+    required: false,
+  },
 });
 
 const Merch = mongoose.model('Merch', merchSchema);
