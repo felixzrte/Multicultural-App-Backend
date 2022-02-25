@@ -1,27 +1,26 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-use-before-define */
-const Merch = require('../models/merchModel');
+const Announcement = require('../models/announcementModel');
 const APIFeatures = require('../utils/APIFeatures');
 
 //CHANGE ALL OF THIS
 
-// Get All Merchs
-exports.getAllMerchs = async (req, res) => {
+exports.getAllAnnouncements = async (req, res) => {
   try {
     // EXECUTE QUERY
-    const features = new APIFeatures(Merch.find(), req.query)
+    const features = new APIFeatures(Announcement.find(), req.query)
       .filter()
       .sort()
       .limitFields()
       .paginate();
 
-    const merchs = await features.query;
+    const announcements = await features.query;
 
     // SEND RESPONSE
     res.status(200).json({
       status: 'success',
-      results: merchs.length,
-      merchs,
+      results: announcements.length,
+      announcements,
     });
   } catch (err) {
     res.status(400).json({
@@ -31,14 +30,14 @@ exports.getAllMerchs = async (req, res) => {
   }
 };
 
-// Create Merch
-exports.createMerch = async (req, res) => {
+
+exports.createAnnouncement = async (req, res) => {
   try {
-    const newMerch = await Merch.create(req.body);
+    const newAnnouncement = await Announcement.create(req.body);
 
     res.status(201).json({
       status: 'success',
-      merch: newMerch,
+      announcement: newAnnouncement,
     });
   } catch (err) {
     res.status(400).json({
@@ -48,16 +47,16 @@ exports.createMerch = async (req, res) => {
   }
 };
 
-// Get Merch
-exports.getMerch = async (req, res) => {
+
+exports.getAnnouncement = async (req, res) => {
   // eslint-disable-next-line no-console
   try {
-    const merch = await Merch.findById(req.params.id);
+    const announcement = await Announcement.findById(req.params.id);
     // Tour.findOne({ _id: req.params.id })
 
     res.status(200).json({
       status: 'success',
-      merch,
+      announcement,
     });
   } catch (err) {
     res.status(400).json({
@@ -67,14 +66,14 @@ exports.getMerch = async (req, res) => {
   }
 };
 
-// Update Merch
-exports.updateMerch = async (req, res) => {
+
+exports.updateAnnouncement = async (req, res) => {
   try {
-    const merch = await Merch.findByIdAndUpdate(req.params.id, req.body);
+    const announcement = await Announcement.findByIdAndUpdate(req.params.id, req.body);
 
     res.status(200).json({
       status: 'success',
-      merch,
+      announcement,
     });
   } catch (err) {
     res.status(400).json({
@@ -84,10 +83,10 @@ exports.updateMerch = async (req, res) => {
   }
 };
 
-// Delete Merch
-exports.deleteMerch = async (req, res) => {
+
+exports.deleteAnnouncement = async (req, res) => {
   try {
-    await Merch.findByIdAndDelete(req.params.id);
+    await Announcement.findByIdAndDelete(req.params.id);
     res.status(204).json({
       status: 'error',
       data: null,

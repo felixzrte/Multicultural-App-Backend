@@ -28,6 +28,8 @@ const suggestionRouter = require('./routes/suggestionsRoutes');
 const merchRouter = require('./routes/merchsRoutes')
 const userRouter = require('./routes/userRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
+const announcementRouter = require('./routes/announcementsRoutes');
+
 
 const app = express();
 
@@ -212,6 +214,8 @@ app.use(`${api}/suggestions`, suggestionRouter);
 app.use(`${api}/merchs`, merchRouter);
 app.use(`${api}/users`, userRouter);
 app.use(`${api}/bookings`, bookingRouter);
+app.use(`${api}/announcements`, announcementRouter);
+
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
