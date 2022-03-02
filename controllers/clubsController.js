@@ -39,7 +39,7 @@ exports.createClub = async (req, res) => {
 
     res.status(201).json({
       status: 'success',
-      clubs,
+      club: newClub,
     });
   } catch (err) {
     res.status(400).json({
@@ -58,7 +58,7 @@ exports.getClub = async (req, res) => {
 
     res.status(200).json({
       status: 'success',
-      clubs,
+      club,
     });
   } catch (err) {
     res.status(400).json({

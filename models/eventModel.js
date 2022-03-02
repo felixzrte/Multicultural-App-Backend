@@ -1,3 +1,4 @@
+const { time } = require('console');
 const mongoose = require('mongoose');
 const slugify = require('slugify');
 
@@ -34,10 +35,9 @@ const eventSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    bannerImage: {
-      type: String, //name of image
-      required: false,
-      //add a default banner image to return here? maybe the MC logo?
+    image: {
+      type: String, 
+      required: [true, 'An event must have an image'],
     },
     favorite: {
       type: String,

@@ -18,6 +18,11 @@ const clubSchema = new mongoose.Schema(
       required: [true, 'A club must have a mission statement'],
       max: 300,
     },
+    header: {
+      type: String,
+      required: [true, 'A club must have a header'],
+      max: 300,
+    },
     cabinetMembers: [
       {
         type: mongoose.Schema.ObjectId,
@@ -41,7 +46,7 @@ const clubSchema = new mongoose.Schema(
     },
     bannerImage: {
       type: String, //name of image
-      required: [true, 'A club must have a banner inage'],
+      required: false,
     },
     email: {
       type: String,
@@ -55,21 +60,13 @@ const clubSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    studentImage: {
+    primaryColor: {
       type: String,
-      required: false,
+      required: [true, 'A club requires an primary color'],
     },
-    color1: {
+    seccondaryColor: {
       type: String,
-      required: false,
-    },
-    color2: {
-      type: String,
-      required: false,
-    },
-    color3: {
-      type: String,
-      required: false,
+      required: [true, 'A club requires an seccondary color'],
     },
   },
   {
