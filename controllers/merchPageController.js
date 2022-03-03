@@ -87,7 +87,7 @@ exports.updateMerch = async (req, res) => {
 // Delete Merch
 exports.deleteMerch = async (req, res) => {
   try {
-    await Merch.findByIdAndDelete(req.params.id);
+    await Merch.findByIdAndUpdate(req.params.id, {merchItemName: "SampleText"}, {new: true});
     res.status(204).json({
       status: 'error',
       data: null,
@@ -99,3 +99,4 @@ exports.deleteMerch = async (req, res) => {
     });
   }
 };
+
