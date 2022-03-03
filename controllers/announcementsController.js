@@ -2,6 +2,7 @@
 /* eslint-disable no-use-before-define */
 const Announcement = require('../models/announcementModel');
 const APIFeatures = require('../utils/APIFeatures');
+const catchAsync = require('../utils/catchAsync');
 
 //CHANGE ALL OF THIS
 
@@ -30,7 +31,6 @@ exports.getAllAnnouncements = async (req, res) => {
   }
 };
 
-
 exports.createAnnouncement = async (req, res) => {
   try {
     const newAnnouncement = await Announcement.create(req.body);
@@ -46,7 +46,6 @@ exports.createAnnouncement = async (req, res) => {
     });
   }
 };
-
 
 exports.getAnnouncement = async (req, res) => {
   // eslint-disable-next-line no-console
@@ -66,7 +65,6 @@ exports.getAnnouncement = async (req, res) => {
   }
 };
 
-
 exports.updateAnnouncement = async (req, res) => {
   try {
     const announcement = await Announcement.findByIdAndUpdate(req.params.id, req.body);
@@ -83,18 +81,11 @@ exports.updateAnnouncement = async (req, res) => {
   }
 };
 
+exports.deleteAnnouncement = catchAsync(async (req, res, next) => {
+  await Announcement.findByIdAndUpdate(req.params.id, { active: false });
 
-exports.deleteAnnouncement = async (req, res) => {
-  try {
-    await Announcement.findByIdAndUpdate(req.params.id, {deletedStatus: true}, {new: true});
-    res.status(204).json({
-      status: 'error',
-      data: null,
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: err,
-    });
-  }
-};
+  res.status(204).json({
+    status: 'success',
+    data: null,
+  });
+});

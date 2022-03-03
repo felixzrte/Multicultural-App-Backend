@@ -20,10 +20,17 @@ const announcementSchema = new mongoose.Schema({
     type: Date,
     required: [true, 'An announcement must have a end date'],
   },
-  deletedStatus: {
-    type: Boolean, 
-    required: [true, 'An item must have a deleted status'],
+  active: {
+    type: Boolean,
+    default: true,
+    select: false,
   },
+});
+
+announcementSchema.pre(/^find/, function (next) {
+  // this points to the current query
+  this.find({ active: { $ne: false } });
+  next();
 });
 
 const Announcement = mongoose.model('Announcement', announcementSchema);
