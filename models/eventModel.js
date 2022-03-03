@@ -2,6 +2,7 @@ const { time } = require('console');
 const mongoose = require('mongoose');
 const slugify = require('slugify');
 
+
 const eventSchema = new mongoose.Schema(
   {
     club: {
@@ -48,9 +49,10 @@ const eventSchema = new mongoose.Schema(
       required: false,
       max: 300,
     },
-    deletedStatus: {
-      type: Boolean, 
-      required: [true, 'An item must have a deleted status'],
+    active: {
+      type: Boolean,
+      default: true,
+      select: false,
     },
     // secretEvent: {
     //   type: Boolean,
@@ -62,6 +64,12 @@ const eventSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+
+eventSchema.pre(/^find/, function (next) {
+  // this points to the current query
+  this.find({ active: { $ne: false } });
+  next();
+});
 
 eventSchema.pre(/^find/, function (next) {
   this.populate({
