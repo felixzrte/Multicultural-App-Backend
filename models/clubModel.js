@@ -68,6 +68,10 @@ const clubSchema = new mongoose.Schema(
       type: String,
       required: [true, 'A club requires an seccondary color'],
     },
+    deletedStatus: {
+      type: Boolean, 
+      required: [true, 'An item must have a deleted status'],
+    },
   },
   {
     toJSON: { virtuals: true },

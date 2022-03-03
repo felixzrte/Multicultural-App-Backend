@@ -86,7 +86,7 @@ exports.updateAnnouncement = async (req, res) => {
 
 exports.deleteAnnouncement = async (req, res) => {
   try {
-    await Announcement.findByIdAndDelete(req.params.id);
+    await Announcement.findByIdAndUpdate(req.params.id, {deletedStatus: true}, {new: true});
     res.status(204).json({
       status: 'error',
       data: null,

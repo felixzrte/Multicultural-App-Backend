@@ -48,6 +48,10 @@ const eventSchema = new mongoose.Schema(
       required: false,
       max: 300,
     },
+    deletedStatus: {
+      type: Boolean, 
+      required: [true, 'An item must have a deleted status'],
+    },
     // secretEvent: {
     //   type: Boolean,
     //   default: false,

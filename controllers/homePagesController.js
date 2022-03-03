@@ -91,7 +91,7 @@ exports.updateHomePage = async (req, res) => {
 // Delete home page
 exports.deleteHomePage = async (req, res) => {
   try {
-    await HomePage.findByIdAndDelete(req.params.id);
+    await HomePage.findByIdAndUpdate(req.params.id, {deletedStatus: true}, {new: true});
     res.status(204).json({
       status: 'error',
       data: null,
