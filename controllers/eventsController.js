@@ -79,15 +79,17 @@ exports.getEvent = catchAsync(async (req, res, next) => {
 });
 
 // Delete Event
-exports.deleteEvent = catchAsync(async (req, res, next) => {
-  const event = await Event.findByIdAndDelete(req.params.id);
-
-  if (!event) {
-    return next(new AppError('No event found with that ID', 404));
+exports.deleteEvent = async (req, res) => {
+  try {
+    await Event.findByIdAndUpdate(req.params.id, {deletedStatus: true}, {new: true});
+    res.status(204).json({
+      status: 'error',
+      data: null,
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err,
+    });
   }
-
-  res.status(204).json({
-    status: 'error',
-    data: null,
-  });
-});
+};

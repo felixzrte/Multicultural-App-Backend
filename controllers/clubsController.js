@@ -88,7 +88,7 @@ exports.updateClub = async (req, res) => {
 // Delete Club
 exports.deleteClub = async (req, res) => {
   try {
-    await Club.findByIdAndDelete(req.params.id);
+    await Club.findByIdAndUpdate(req.params.id, {deletedStatus: true}, {new: true});
     res.status(204).json({
       status: 'error',
       data: null,

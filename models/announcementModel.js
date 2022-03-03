@@ -20,6 +20,10 @@ const announcementSchema = new mongoose.Schema({
     type: Date,
     required: [true, 'An announcement must have a end date'],
   },
+  deletedStatus: {
+    type: Boolean, 
+    required: [true, 'An item must have a deleted status'],
+  },
 });
 
 const Announcement = mongoose.model('Announcement', announcementSchema);
