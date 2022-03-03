@@ -2,7 +2,7 @@
 /* eslint-disable no-use-before-define */
 const Club = require('../models/clubModel');
 const APIFeatures = require('../utils/APIFeatures');
-
+const catchAsync = require('../utils/catchAsync');
 //CHANGE ALL OF THIS
 
 // Get All Clubs
@@ -86,17 +86,11 @@ exports.updateClub = async (req, res) => {
 };
 
 // Delete Club
-exports.deleteClub = async (req, res) => {
-  try {
-    await Club.findByIdAndUpdate(req.params.id, {deletedStatus: true}, {new: true});
-    res.status(204).json({
-      status: 'error',
-      data: null,
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: err,
-    });
-  }
-};
+exports.deleteClub = catchAsync(async (req, res, next) => {
+  await Club.findByIdAndUpdate(req.params.id, { active: false });
+
+  res.status(204).json({
+    status: 'success',
+    data: null,
+  });
+});
