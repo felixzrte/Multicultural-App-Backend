@@ -26,6 +26,10 @@ const homePageSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  deletedStatus: {
+    type: Boolean, 
+    required: [true, 'An item must have a deleted status'],
+  },
 });
 
 const HomePage = mongoose.model('HomePage', homePageSchema);

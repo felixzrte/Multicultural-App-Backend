@@ -80,14 +80,10 @@ exports.getEvent = catchAsync(async (req, res, next) => {
 
 // Delete Event
 exports.deleteEvent = catchAsync(async (req, res, next) => {
-  const event = await Event.findByIdAndDelete(req.params.id);
-
-  if (!event) {
-    return next(new AppError('No event found with that ID', 404));
-  }
+  await Event.findByIdAndUpdate(req.params.id, { active: false });
 
   res.status(204).json({
-    status: 'error',
+    status: 'success',
     data: null,
   });
 });

@@ -40,10 +40,17 @@ const merchSchema = new mongoose.Schema({
     type: Number, 
     required: false,
   },
-  deletedStatus: {
-    type: Boolean, 
-    required: [true, 'An item must have a deleted status'],
+  active: {
+    type: Boolean,
+    default: true,
+    select: false,
   },
+});
+
+merchSchema.pre(/^find/, function (next) {
+  // this points to the current query
+  this.find({ active: { $ne: false } });
+  next();
 });
 
 const Merch = mongoose.model('Merch', merchSchema);

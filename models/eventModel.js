@@ -1,3 +1,4 @@
+const { time } = require('console');
 const mongoose = require('mongoose');
 const slugify = require('slugify');
 
@@ -34,10 +35,9 @@ const eventSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    bannerImage: {
-      type: String, //name of image
-      required: false,
-      //add a default banner image to return here? maybe the MC logo?
+    image: {
+      type: String,
+      required: [true, 'An event must have an image'],
     },
     favorite: {
       type: String,
@@ -47,6 +47,11 @@ const eventSchema = new mongoose.Schema(
       type: String,
       required: false,
       max: 300,
+    },
+    active: {
+      type: Boolean,
+      default: true,
+      select: false,
     },
     // secretEvent: {
     //   type: Boolean,
@@ -60,12 +65,18 @@ const eventSchema = new mongoose.Schema(
 );
 
 eventSchema.pre(/^find/, function (next) {
-  this.populate({
-    path: 'club',
-    select: 'name -cabinetMembers',
-  });
+  // this points to the current query
+  this.find({ active: { $ne: false } });
   next();
 });
+
+// eventSchema.pre(/^find/, function (next) {
+//   this.populate({
+//     path: 'club',
+//     select: 'name -cabinetMembers',
+//   });
+//   next();
+// });
 
 // Virtual populate
 eventSchema.virtual('bookings', {
@@ -87,11 +98,6 @@ eventSchema.pre('save', function (next) {
 //   this.start = Date.now();
 //   next();
 // });
-
-eventSchema.post(/^find/, function (docs, next) {
-  console.log(`Query took ${Date.now() - this.start} miliseconds`);
-  next();
-});
 
 const Event = mongoose.model('Event', eventSchema);
 
