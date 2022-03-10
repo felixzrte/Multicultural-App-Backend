@@ -2,7 +2,6 @@ const { time } = require('console');
 const mongoose = require('mongoose');
 const slugify = require('slugify');
 
-
 const eventSchema = new mongoose.Schema(
   {
     club: {
@@ -37,7 +36,7 @@ const eventSchema = new mongoose.Schema(
       required: false,
     },
     image: {
-      type: String, 
+      type: String,
       required: [true, 'An event must have an image'],
     },
     favorite: {
@@ -71,13 +70,13 @@ eventSchema.pre(/^find/, function (next) {
   next();
 });
 
-eventSchema.pre(/^find/, function (next) {
-  this.populate({
-    path: 'club',
-    select: 'name -cabinetMembers',
-  });
-  next();
-});
+// eventSchema.pre(/^find/, function (next) {
+//   this.populate({
+//     path: 'club',
+//     select: 'name -cabinetMembers',
+//   });
+//   next();
+// });
 
 // Virtual populate
 eventSchema.virtual('bookings', {
@@ -99,11 +98,6 @@ eventSchema.pre('save', function (next) {
 //   this.start = Date.now();
 //   next();
 // });
-
-eventSchema.post(/^find/, function (docs, next) {
-  console.log(`Query took ${Date.now() - this.start} miliseconds`);
-  next();
-});
 
 const Event = mongoose.model('Event', eventSchema);
 
