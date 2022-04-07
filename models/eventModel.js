@@ -5,8 +5,7 @@ const slugify = require('slugify');
 const eventSchema = new mongoose.Schema(
   {
     club: {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Club',
+      type: String,
       required: [true, 'An event must have a club'],
     },
     eventName: {
