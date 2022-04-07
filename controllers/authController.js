@@ -58,6 +58,20 @@ exports.login = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, res);
 });
 
+exports.logout = catchAsync(async (req, res, next) => {
+  const cookieOptions = {
+    expires: new Date(Date.now() + 10000),
+    httpOnly: true,
+  };
+  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+
+  res.cookie('jwt', 'expiredToken ', cookieOptions);
+  res.status(200).json({
+    status: 'success',
+    message: 'Token sent',
+  });
+});
+
 exports.protect = catchAsync(async (req, res, next) => {
   // 1.) Getting token aand check if it's true
   let token;
