@@ -12,6 +12,11 @@ const announcementSchema = new mongoose.Schema({
     required: [true, 'The announcement must have contents'],
     max: 64,
   },
+  club: {
+    type: String,
+    required: [true, 'The announcement must have a club'],
+    max: 64,
+  },
   startDate: {
     type: Date,
     required: [true, 'An announcement must have a start date'],
