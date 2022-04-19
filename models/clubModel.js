@@ -72,6 +72,10 @@ const clubSchema = new mongoose.Schema(
       type: Date,
       required: [true, 'An club must have a meeting time'],
     },
+    meetingDays: {
+      type: String,
+      required: [true, 'A club must have a meeting day'],
+    },
     active: {
       type: Boolean,
       default: true,
