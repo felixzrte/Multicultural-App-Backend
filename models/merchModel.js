@@ -12,16 +12,21 @@ const merchSchema = new mongoose.Schema({
     required: [true, 'An item must have a price'],
     max: 300,
   },
+  club: {
+    type: String,
+    required: [true, 'An item must have a club'],
+    max: 60,
+  },
   pic: {
     type: String,
     required: [true, 'An item must have a picture'],
   },
   contactEmail: {
-    type: String, 
+    type: String,
     required: [true, 'An item must have a contact email'],
   },
   contactNumber: {
-    type: String, 
+    type: String,
     required: false,
   },
   description: {
@@ -29,7 +34,7 @@ const merchSchema = new mongoose.Schema({
     required: [true, 'An item must have a description'],
   },
   numSmall: {
-    type: Number, 
+    type: Number,
     required: false,
   },
   numMedium: {
@@ -37,7 +42,7 @@ const merchSchema = new mongoose.Schema({
     required: false,
   },
   numLarge: {
-    type: Number, 
+    type: Number,
     required: false,
   },
   active: {
