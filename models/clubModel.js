@@ -66,7 +66,11 @@ const clubSchema = new mongoose.Schema(
     },
     seccondaryColor: {
       type: String,
-      required: [true, 'A club requires an seccondary color'],
+      required: [true, 'A club requires an secondary color'],
+    },
+    meetingTimes: {
+      type: Date,
+      required: [true, 'An club must have a meeting time'],
     },
     active: {
       type: Boolean,
