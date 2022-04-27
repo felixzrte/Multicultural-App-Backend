@@ -7,13 +7,13 @@ const AppError = require('../utils/appError');
 
 exports.aliasLalEvents = (req, res, next) => {
   // alias middlewares
-  req.query.clubName = 'La Alianza Latina';
+  req.query.club = 'La Alianza Latina';
   // Add more querys here
   next();
 };
 
 exports.aliasCsaEvents = (req, res, next) => {
-  req.query.clubName = 'Caribbean Student Association';
+  req.query.club = 'Caribbean Student Association';
   next();
 };
 
